@@ -1,10 +1,7 @@
 import csv
-from typing import Tuple
+import os
 from models.ingredient import Ingredient
 from models.dish import Dish
-import os
-
-dishes = Tuple[float, Ingredient, int]
 
 
 class MenuData:
@@ -23,36 +20,38 @@ class MenuData:
 
     def read_menu_data(self):
         with open(self.source_path, "r", encoding="utf-8", newline="") as file:
-            menu_reader = csv.reader(file, delimiter=",")
-            next(menu_reader)
+            menu_reader = csv.DictReader(file)
+
             for row in menu_reader:
-                dish_name, price, ingredient_name, recipe_amount = row
+                dish = row["dish"]
+                price = row["price"]
+                ingredient = row["ingredient"]
+                recipe_amount = row["recipe_amount"]
 
-                ingredient = Ingredient(ingredient_name)
-                dish = Dish(dish_name, float(price))
+                ingredient_instance = Ingredient(ingredient)
+                dish_instance = Dish(dish, float(price))
 
-                if dish.name not in self.dishes:
-                    self.dishes[dish] = set()
+                if dish_instance.name not in self.dishes:
+                    self.dishes[dish_instance.name] = {
+                        "price": price,
+                        "ingredients": {},
+                    }
 
-                for existing_dish in self.dishes:
-                    if existing_dish.name == dish_name:
-                        self.dishes[existing_dish].add(
-                            (ingredient, int(recipe_amount))
-                        )
-                        break
-                else:
-                    self.dishes[dish].add((ingredient, int(recipe_amount)))
-        return self.dishes
+                self.dishes[dish_instance.name]["ingredients"][
+                    ingredient_instance.name
+                ] = recipe_amount
+        return set(self.dishes)
 
-    def get_menu(self):
-        return set(self.dishes.keys())
+    # def get_menu(self):
+    #     return set(self.dishes.keys())
 
 
 # source_path
 path = os.path.join("data", "menu_base_data.csv")
 menu_obj = MenuData(path)
 test = menu_obj.read_menu_data()
-# print("MENU DATA", test)
+# test_get = menu_obj.get_menu()
+print("MENUUUU", test)
 
 dishesss = menu_obj.dishes
-print("GET DISHES", dishesss)
+print("GET_DISHES", dishesss)
