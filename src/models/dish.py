@@ -39,13 +39,3 @@ class Dish:
 
     def get_ingredients(self):
         return set(self.recipe.keys())
-
-
-ingredient_1 = Ingredient("caldo de carne")
-dish1 = Dish("Feijoada", 20.00)
-dish1.add_ingredient_dependency(ingredient_1, 5)
-recipe = dish1.recipe
-# print(recipe)
-
-test = dish1.get_ingredients()
-print(test)
