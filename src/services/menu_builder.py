@@ -1,4 +1,7 @@
 from typing import Dict, List
+
+# from models.ingredient import Ingredient, Restriction
+
 from services.inventory_control import InventoryMapping
 from services.menu_data import MenuData
 
@@ -8,6 +11,7 @@ INVENTORY_PATH = "data/inventory_base_data.csv"
 
 
 class MenuBuilder:
+    # def __init__(self, data_path=DATA_PATH):
     def __init__(self, data_path=DATA_PATH, inventory_path=INVENTORY_PATH):
 
         self.menu_data = MenuData(data_path)
@@ -41,3 +45,13 @@ class MenuBuilder:
                 dishes_list.append(dishes_dict)
 
         return dishes_list
+
+
+# if __name__ == "__main__":
+#     instancia = MenuBuilder()
+#     menu_data = instancia.menu_data
+#     # print("DISHES::::", menu_data.dishes)
+
+#     ingrediente = Ingredient("camarão")
+#     print(instancia.get_main_menu(Restriction.ANIMAL_MEAT))
+#     # print("deve retornar todos::::", instancia.get_main_menu())
